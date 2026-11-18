@@ -1,0 +1,26 @@
+# Python environments and caches
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.ipynb_checkpoints/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Downloaded datasets and Hugging Face caches (never commit raw datasets)
+data/raw/*
+!data/raw/.gitkeep
+data/processed/*
+!data/processed/.gitkeep
+
+# Notebook/build outputs (keep notebook result outputs, ignore generated site)
+book/_build/
+_build/
+_site/
+
+# OS/editor files
+.DS_Store
+Thumbs.db
+.vscode/
+*.log
