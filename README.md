@@ -1,14 +1,12 @@
 # Đồ án Tiền xử lý dữ liệu — Tabular Data + Image Data
 
-> **Trước khi nộp:** thay các trường `[HỌ VÀ TÊN]`, `[MSSV]`, `[LỚP]` bên dưới bằng thông tin thật. Không để placeholder trong bản nộp cuối cùng.
-
 ## 1. Thông tin sinh viên
 
-- **Họ và tên:** [HỌ VÀ TÊN]
-- **MSSV:** [MSSV]
-- **Lớp:** [LỚP]
+- **Họ và tên:** Phạm Đặng Thiên Quốc
+- **MSSV:** 24127524
+- **Lớp:** 24KHMT1
 - **Repository:** https://github.com/Harryyy603002/data-preprocessing-project
-- **Học phần:** Tiền xử lý dữ liệu
+- **Học phần:** Khai thác dữ liệu & ứng dụng
 
 ## 2. Phạm vi đồ án
 
