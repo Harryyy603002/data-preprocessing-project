@@ -1,1 +1,20 @@
+title: "Đồ án Tiền xử lý dữ liệu — Tabular & Image"
+author: "[HỌ VÀ TÊN] — [MSSV]"
+logo: null
+copyright: "2026"
+only_build_toc_files: true
+exclude_patterns:
+  - "**/.ipynb_checkpoints"
+  - "**/.DS_Store"
+execute:
+  execute_notebooks: "off"
+  allow_errors: false
+html:
+  use_issues_button: false
+  use_repository_button: true
+  use_edit_page_button: false
+repository:
+  url: "https://github.com/Harryyy603002/data-preprocessing-project"
+  branch: main
+  path_to_book: book
 
