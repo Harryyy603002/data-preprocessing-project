@@ -166,4 +166,6 @@ Nguồn: [Hugging Face — uoft-cs/cifar10](https://huggingface.co/datasets/uoft
 ## 8. Tài liệu tham khảo
 
 ```{bibliography}
+{cite}`little1988mcar`
+{cite}`wang2004ssim`
 ```
