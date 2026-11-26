@@ -35,7 +35,6 @@ data-preprocessing-project/
 ├── .github/workflows/deploy-book.yml   # tự build và publish GitHub Pages
 ├── .gitignore
 ├── README.md
-├── UPLOAD_GUIDE.md                     # upload toàn bộ bằng GitHub Web, không cần Git
 ├── requirements.txt
 ├── book/
 │   ├── _config.yml                     # cấu hình Jupyter Book v1
@@ -58,11 +57,7 @@ data-preprocessing-project/
     └── processed/.gitkeep              # sản phẩm trung gian, không commit
 ```
 
-## 5. Upload lên GitHub không cần Git
-
-Nếu bạn thao tác thủ công trên website GitHub, làm theo file [UPLOAD_GUIDE.md](UPLOAD_GUIDE.md). Bộ khung chưa yêu cầu cài Git để upload; chỉ cần giải nén ZIP và dùng **Add file → Upload files**.
-
-## 6. Cài đặt môi trường trên Windows 11
+## 5. Cài đặt môi trường trên Windows 11
 
 Khuyến nghị **Python 3.11 64-bit** và VS Code có extension Python + Jupyter. Không cần cài CUDA, PyTorch hay TensorFlow vì đồ án này dùng các thuật toán thống kê/ML và OpenCV chạy CPU; GPU RTX 2050 không bắt buộc.
 
@@ -84,7 +79,7 @@ Nếu PowerShell chặn kích hoạt môi trường, có thể dùng terminal **
 
 Trong VS Code, mở một notebook, chọn kernel **Python (preprocessing-project)** hoặc kernel trỏ đến `.venv`, rồi chạy các cell từ đầu đến cuối.
 
-## 7. Chạy đồ án theo đúng thứ tự
+## 6. Chạy đồ án theo đúng thứ tự
 
 1. `book/01_EDA_tabular.ipynb`
 2. `book/02_preprocessing_tabular.ipynb`
@@ -95,7 +90,7 @@ Lần chạy đầu cần Internet để tải dữ liệu. Adult khoảng vài 
 
 **Quan trọng:** sau khi chạy xong từng notebook, nhấn **Save** (`Ctrl+S`) để lưu output/biểu đồ vào file `.ipynb`. Không xóa output trước khi publish book. Nếu notebook báo lỗi, xử lý lỗi trước khi chuyển chương; không bỏ qua cell lỗi rồi coi như đã hoàn tất.
 
-## 8. Build Jupyter Book trên máy
+## 7. Build Jupyter Book trên máy
 
 Trong terminal đang ở thư mục repository gốc:
 
@@ -108,7 +103,7 @@ Trang web build ra tại `book/_build/html/index.html`. Mở file đó trong tr�
 
 Cấu hình book đặt `execute_notebooks: off` để lần build/publish không tự tải lại 60.000 ảnh hoặc chạy những thí nghiệm nặng. Vì vậy, **cần chạy và lưu output của cả bốn notebook trước khi build cuối cùng**. Workflow GitHub Pages cũng chỉ render notebook đã lưu output; không chạy thí nghiệm trên máy chủ GitHub.
 
-## 9. Xuất bản GitHub Pages
+## 8. Xuất bản GitHub Pages
 
 1. Đẩy toàn bộ nội dung repository lên nhánh `main`.
 2. Trên GitHub mở **Settings → Pages**.
@@ -122,7 +117,7 @@ Cấu hình book đặt `execute_notebooks: off` để lần build/publish khôn
 
 Nếu username/repository thay đổi, URL cũng thay đổi. Chỉ nộp link trang book sau khi workflow thành công và trang web truy cập được.
 
-## 10. Nguyên tắc tái lập và chống rò rỉ dữ liệu
+## 9. Nguyên tắc tái lập và chống rò rỉ dữ liệu
 
 - Dùng random seed 42 cho thao tác lấy mẫu/augmentation/mô hình có ngẫu nhiên.
 - Train/test được tách trước khi fit imputer, scaler, encoder và mô hình.
@@ -132,7 +127,7 @@ Nếu username/repository thay đổi, URL cũng thay đổi. Chỉ nộp link t
 - Dữ liệu thô, cache Hugging Face và kết quả trung gian bị loại khỏi Git bởi `.gitignore`.
 - Mọi kết luận trong báo cáo phải trích từ output thực tế trong notebook; không chép số minh họa hoặc đoán trước kết quả.
 
-## 11. Giới hạn cần nêu trong báo cáo
+## 10. Giới hạn cần nêu trong báo cáo
 
 - Little’s MCAR được chạy trên ma trận có categorical ordinal-coded để đưa về dạng số; p-value phải được diễn giải thận trọng. Kiểm định này chỉ kiểm tra MCAR, không tự phân biệt MAR với MNAR.
 - KS cho tập trước/sau loại ngoại lai là so sánh mô tả trên hai mẫu lồng nhau; không xem p-value như kiểm định độc lập hoàn hảo.
@@ -141,7 +136,7 @@ Nếu username/repository thay đổi, URL cũng thay đổi. Chỉ nộp link t
 - CIFAR-10 32×32 nên resize lên 64×64/128×128 là upscale, không tạo chi tiết ảnh mới.
 - Với class imbalance, SMOTE/ADASYN được thử trên tập biến số để tránh nội suy giả các mã One-Hot; kết quả chỉ đại diện thí nghiệm numeric-only này.
 
-## 12. Checklist trước khi nộp
+## 11. Checklist trước khi nộp
 
 Checklist chi tiết đối chiếu đề và rubric nằm ở [book/coverage_checklist.md](book/coverage_checklist.md).
 
