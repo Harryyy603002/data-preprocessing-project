@@ -45,8 +45,9 @@ data-preprocessing-project/
 │   ├── 04_EDA_image.ipynb              # EDA ảnh
 │   ├── 05_preprocessing_image.ipynb    # preprocessing ảnh
 │   ├── report.md                       # báo cáo so sánh và thảo luận
-│   ├── coverage_checklist.md           # đối chiếu yêu cầu/rubric theo chương
 │   └── references.bib                  # tài liệu tham khảo
+├── docs/
+│   ├── coverage_checklist.md           # đối chiếu yêu cầu/rubric theo chương
 ├── src/
 │   ├── __init__.py
 │   ├── data_loading.py                 # tải/kiểm tra dữ liệu từ Hugging Face
