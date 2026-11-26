@@ -5,5 +5,4 @@ chapters:
   - file: 02_preprocessing_tabular
   - file: 04_EDA_image
   - file: 05_preprocessing_image
-  - file: coverage_checklist
   - file: report
