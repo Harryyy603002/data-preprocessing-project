@@ -31,6 +31,9 @@ jobs:
       - name: Install Jupyter Book
         run: python -m pip install --upgrade pip jupyter-book==1.0.4.post1
 
+      - name: Check notebooks and placeholders
+        run: python scripts/check_notebooks.py
+
       - name: Build the book (render saved notebook outputs)
         run: jupyter-book build book/
 
