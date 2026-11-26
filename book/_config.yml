@@ -17,4 +17,5 @@ repository:
   url: "https://github.com/Harryyy603002/data-preprocessing-project"
   branch: main
   path_to_book: book
-
+bibtex_bibfiles:
+  - references.bib
