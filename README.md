@@ -6,7 +6,7 @@
 - **MSSV:** 24127524
 - **Lớp:** 24KHMT1
 - **Repository:** https://github.com/Harryyy603002/data-preprocessing-project
-- **Học phần:** Khai thác dữ liệu & ứng dụng
+- **Học phần:** Khai Thác Dữ liệu & Ứng Dụng
 
 ## 2. Phạm vi đồ án
 
