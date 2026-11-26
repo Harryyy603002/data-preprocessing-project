@@ -1,9 +1,9 @@
 # Đồ án Tiền xử lý dữ liệu
 
-**Sinh viên:** [HỌ VÀ TÊN]  
-**MSSV:** [MSSV]  
-**Lớp:** [LỚP]  
-**Học phần:** Tiền xử lý dữ liệu
+**Sinh viên:** Phạm Đặng Thiên Quốc  
+**MSSV:** 24127524  
+**Lớp:** 24KHMT1  
+**Học phần:** Khai Thác Dữ Liệu & Ứng Dụng
 
 ## Giới thiệu
 
@@ -24,8 +24,7 @@ Các hàm tải dữ liệu và kiểm tra điều kiện nằm ở `src/data_lo
 2. Tiền xử lý dữ liệu bảng: imputation, outlier, scaling, encoding, VIF, feature selection, PCA/t-SNE/UMAP và class imbalance.
 3. EDA ảnh: pixel histogram/KDE, imbalance, pHash, độ sáng/độ tương phản.
 4. Tiền xử lý ảnh: SSIM/PSNR, color spaces, normalization, augmentation, PCA/t-SNE, edge detection và ablation.
-5. Checklist đối chiếu từng tiêu chí và rubric.
-6. Báo cáo: so sánh, kết luận và giới hạn.
+5. Báo cáo: so sánh, kết luận và giới hạn.
 
 ## Cách đọc kết quả
 
