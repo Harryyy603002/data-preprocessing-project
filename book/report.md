@@ -165,4 +165,5 @@ Nguồn: [Hugging Face — uoft-cs/cifar10](https://huggingface.co/datasets/uoft
 
 ## 8. Tài liệu tham khảo
 
-Xem `references.bib` và các liên kết dataset được ghi ở trang mở đầu/README.
+```{bibliography}
+```
