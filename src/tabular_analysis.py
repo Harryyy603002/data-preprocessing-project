@@ -254,7 +254,7 @@ def encode_variants(X_train: pd.DataFrame, X_test: pd.DataFrame, categorical_col
     test_cat = X_test[categorical_columns].fillna("__MISSING__").astype(str)
     outputs = {}
 
-    onehot = OneHotEncoder(handle_unknown="ignore", drop=None, sparse_output=True)
+    onehot = OneHotEncoder(handle_unknown="ignore", drop="first", sparse_output=True)
     outputs["One-Hot"] = (onehot.fit_transform(train_cat), onehot.transform(test_cat), onehot.get_feature_names_out(categorical_columns))
 
     ordinal = OrdinalEncoder(handle_unknown="use_encoded_value", unknown_value=-1)
