@@ -139,7 +139,7 @@ Nếu username/repository thay đổi, URL cũng thay đổi. Chỉ nộp link t
 
 ## 11. Checklist trước khi nộp
 
-Checklist chi tiết đối chiếu đề và rubric nằm ở [book/coverage_checklist.md](book/coverage_checklist.md).
+Checklist chi tiết đối chiếu đề và rubric nằm ở [docs/coverage_checklist.md](docs/coverage_checklist.md).
 
 - [ ] Điền họ tên, MSSV và lớp; xóa toàn bộ placeholder.
 - [ ] Notebook 1–4 chạy từ đầu đến cuối không có lỗi.
