@@ -165,7 +165,7 @@ Nguồn: [Hugging Face — uoft-cs/cifar10](https://huggingface.co/datasets/uoft
 
 ## 8. Tài liệu tham khảo
 
+Các tài liệu được trích trong báo cáo: Little (1988) {cite}`little1988mcar`, Wang và cộng sự (2004) {cite}`wang2004ssim`, Krizhevsky (2009) {cite}`krizhevsky2009cifar`.
+
 ```{bibliography}
-{cite}`little1988mcar`
-{cite}`wang2004ssim`
 ```
