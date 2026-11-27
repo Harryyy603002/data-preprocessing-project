@@ -7,6 +7,7 @@ from __future__ import annotations
 import cv2
 import hashlib
 import numpy as np
+from scipy import ndimage
 from PIL import Image, ImageEnhance
 
 RANDOM_SEED = 42
@@ -193,3 +194,39 @@ def edge_map(image: np.ndarray, method: str, setting: str) -> np.ndarray:
         return (cv2.Canny(gray, low, high) > 0).astype(np.uint8)
     raise ValueError(f"Edge detector không hỗ trợ: {method}")
 
+
+def peak_signal_noise_ratio(im1, im2, *, data_range=255.0):
+    """PSNR (dB) giữa hai ảnh cùng kích thước; trả về inf nếu hai ảnh giống hệt."""
+    a = np.asarray(im1, dtype=np.float64)
+    b = np.asarray(im2, dtype=np.float64)
+    mse = np.mean((a - b) ** 2)
+    if mse == 0:
+        return float("inf")
+    return float(10.0 * np.log10(data_range ** 2 / mse))
+
+
+def _ssim_2d(a, b, data_range, win_size):
+    c1 = (0.01 * data_range) ** 2
+    c2 = (0.03 * data_range) ** 2
+    n = win_size ** 2
+    cov_norm = n / (n - 1.0)  # hiệp phương sai mẫu
+    ux = ndimage.uniform_filter(a, win_size)
+    uy = ndimage.uniform_filter(b, win_size)
+    vx = cov_norm * (ndimage.uniform_filter(a * a, win_size) - ux * ux)
+    vy = cov_norm * (ndimage.uniform_filter(b * b, win_size) - uy * uy)
+    vxy = cov_norm * (ndimage.uniform_filter(a * b, win_size) - ux * uy)
+    s = ((2 * ux * uy + c1) * (2 * vxy + c2)) / ((ux ** 2 + uy ** 2 + c1) * (vx + vy + c2))
+    pad = (win_size - 1) // 2
+    return float(s[pad:-pad, pad:-pad].mean())
+
+
+def structural_similarity(im1, im2, *, channel_axis=None, data_range=255.0, win_size=7):
+    """Mean SSIM (cửa sổ đều win_size x win_size, K1=0.01, K2=0.03)."""
+    a = np.asarray(im1, dtype=np.float64)
+    b = np.asarray(im2, dtype=np.float64)
+    if channel_axis is not None:
+        a = np.moveaxis(a, channel_axis, -1)
+        b = np.moveaxis(b, channel_axis, -1)
+        return float(np.mean([_ssim_2d(a[..., c], b[..., c], data_range, win_size)
+                              for c in range(a.shape[-1])]))
+    return _ssim_2d(a, b, data_range, win_size)
