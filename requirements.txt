@@ -8,9 +8,7 @@ seaborn==0.13.2
 scikit-learn==1.5.2
 statsmodels==0.14.4
 missingno==0.5.2
-pyampute==0.0.3
 imbalanced-learn==0.13.0
-scikit-image==0.24.0
 opencv-python-headless==4.10.0.84
 Pillow==11.0.0
 datasets==3.2.0
