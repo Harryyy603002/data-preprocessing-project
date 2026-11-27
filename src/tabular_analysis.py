@@ -6,6 +6,7 @@ import warnings
 import numpy as np
 import pandas as pd
 from scipy.stats import ks_2samp
+from scipy.stats import chi2
 from sklearn.experimental import enable_iterative_imputer  # noqa: F401
 from sklearn.impute import IterativeImputer, KNNImputer, SimpleImputer
 from sklearn.linear_model import BayesianRidge
@@ -21,26 +22,78 @@ def split_feature_types(frame: pd.DataFrame, target: str = "income"):
     return X, numeric, categorical
 
 
+def _em_mean_cov(X: np.ndarray, max_iter: int = 200, tol: float = 1e-6):
+    """Ước lượng EM của vector trung bình và ma trận hiệp phương sai khi có NaN."""
+    n, p = X.shape
+    miss = np.isnan(X)
+    mu = np.nanmean(X, axis=0)
+    sigma = np.cov(np.where(miss, mu, X), rowvar=False) + 1e-6 * np.eye(p)
+    patterns: dict[tuple, list[int]] = {}
+    for i in range(n):
+        patterns.setdefault(tuple(miss[i]), []).append(i)
+    for _ in range(max_iter):
+        s1 = np.zeros(p)
+        s2 = np.zeros((p, p))
+        for pat, rows in patterns.items():
+            m = np.array(pat)
+            o = ~m
+            rows = np.array(rows)
+            xr = np.tile(mu, (len(rows), 1))
+            cond_cov = np.zeros((p, p))
+            if o.any():
+                xr[:, o] = X[np.ix_(rows, np.flatnonzero(o))]
+            if m.any():
+                if o.any():
+                    soo = sigma[np.ix_(o, o)]
+                    smo = sigma[np.ix_(m, o)]
+                    b = smo @ np.linalg.pinv(soo)
+                    xr[:, m] = mu[m] + (xr[:, o] - mu[o]) @ b.T
+                    cond_cov[np.ix_(m, m)] = sigma[np.ix_(m, m)] - b @ smo.T
+                else:
+                    cond_cov[np.ix_(m, m)] = sigma[np.ix_(m, m)]
+            s1 += xr.sum(axis=0)
+            s2 += xr.T @ xr + len(rows) * cond_cov
+        mu_new = s1 / n
+        sigma_new = s2 / n - np.outer(mu_new, mu_new)
+        delta = max(np.abs(mu_new - mu).max(), np.abs(sigma_new - sigma).max())
+        mu, sigma = mu_new, sigma_new
+        if delta < tol:
+            break
+    return mu, sigma, patterns
+
+
 def little_mcar_test(frame: pd.DataFrame, target: str = "income") -> float:
-    """Run Little's MCAR test via pyampute after documented ordinal coding.
+    """Little's MCAR test (1988), tự cài bằng EM; trả về p-value.
 
-    This is an exploratory implementation: categorical values are ordinal-coded
-    because Little's test is a numeric multivariate-normal test. Interpret cautiously.
+    Biến phân loại được ordinal-code trước (xấp xỉ, cần nêu rõ khi diễn giải).
     """
-    from pyampute.exploration.mcar_statistical_tests import MCARTest
-
-    X = frame.drop(columns=[target], errors="ignore").copy()
-    for col in X.columns:
-        if not pd.api.types.is_numeric_dtype(X[col]):
-            categorical = pd.Categorical(X[col])
-            codes = pd.Series(categorical.codes, index=X.index, dtype="float64")
+    x_df = frame.drop(columns=[target], errors="ignore").copy()
+    for col in x_df.columns:
+        if not pd.api.types.is_numeric_dtype(x_df[col]):
+            codes = pd.Series(pd.Categorical(x_df[col]).codes, index=x_df.index, dtype="float64")
             codes.loc[codes == -1] = np.nan
-            X[col] = codes
-    X = X.replace([np.inf, -np.inf], np.nan).astype(float)
-    if not X.isna().any().any():
+            x_df[col] = codes
+    x_df = x_df.replace([np.inf, -np.inf], np.nan).astype(float)
+    if not x_df.isna().any().any():
         raise ValueError("Little's MCAR test cần dữ liệu có giá trị thiếu.")
-    return float(MCARTest(method="little").little_mcar_test(X))
-
+    x_df = x_df.loc[:, x_df.nunique(dropna=True) > 1]  # bỏ cột hằng
+    x = x_df.to_numpy()
+    n, p = x.shape
+    mu, sigma, patterns = _em_mean_cov(x)
+    d2, observed_total = 0.0, 0
+    for pat, rows in patterns.items():
+        o = ~np.array(pat)
+        k = int(o.sum())
+        if k == 0:
+            continue
+        observed_total += k
+        xbar = x[np.ix_(rows, np.flatnonzero(o))].mean(axis=0)
+        diff = xbar - mu[o]
+        d2 += len(rows) * float(diff @ np.linalg.pinv(sigma[np.ix_(o, o)]) @ diff)
+    df = observed_total - p
+    if df <= 0:
+        raise ValueError("Không đủ pattern thiếu khác nhau để chạy Little's test.")
+    return float(chi2.sf(d2, df))
 
 def compare_numeric_imputers(
     frame: pd.DataFrame,
