@@ -75,6 +75,8 @@ def load_adult_dataset() -> pd.DataFrame:
         )
     if frame["income"].isna().any():
         raise ValueError("Cột nhãn income đang có giá trị thiếu; cần kiểm tra nguồn trước khi tiếp tục.")
+    for col in frame.select_dtypes(include=["string"]).columns:
+        frame[col] = frame[col].astype(object).where(frame[col].notna(), np.nan)
     return frame
 
 
